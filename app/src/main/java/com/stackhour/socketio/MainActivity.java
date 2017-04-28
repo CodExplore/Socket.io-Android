@@ -19,7 +19,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       socket.connect();
+    socket = IO.socket("http://localhost");
+socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+
+  @Override
+  public void call(Object... args) {
+    socket.emit("test", "hi");
+    socket.disconnect();
+  }
+
+}).on("event", new Emitter.Listener() {
+
+  @Override
+  public void call(Object... args) {}
+
+}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+
+  @Override
+  public void call(Object... args) {}
+
+});
+socket.connect();
     }
 	
 	
